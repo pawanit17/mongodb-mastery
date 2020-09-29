@@ -1,7 +1,6 @@
 # Introduction to MongoDB
 
-MongoDB is a *NOSQL* database that helps in faster application development. This is also suitable for cases where there are lots of READs
-and WRITEs. Allows application to grow easily as the stringent database constraints do not apply anymore.
+MongoDB is a *NOSQL* database that helps in faster application development. This is also suitable for cases where there are lots of READs and WRITEs. Allows application to grow easily as the stringent database constraints do not apply anymore.
 
 Data is stored in Collections in the form of Documents. A typical Document looks as follows:
 
@@ -25,13 +24,6 @@ backends talk to the *mongod*, which would transact with MongoDB database.
 
 [Drivers are available](https://docs.mongodb.com/drivers/) for connecting to MongoDB from a variety of programming languages - C, Java, NodeJS, Python etc.
 
-# Commands
-
-* *show dbs* lists the databases in the instance.
-* *use shop* switches to the database shop if it exists or would create one for us.
-* *db.products.insertOne( {"name":"Books", "qty":17} )* inserts the JSON document onto the collection. Also the collection products will be
-created if it does not exist.
-* *db.products.find()* gets all the documents in a given collection.
 
 Another example illustrating the flexibility of MongoDB for a *Books* collection in an *Inventory* database.
 
@@ -60,6 +52,92 @@ Another example illustrating the flexibility of MongoDB for a *Books* collection
                     }
             ]
     }
+
+# CRUD Data
+
+If the database does not exist, it would be created on the fly. If the collection does not exist, it too would be created.
+
+***insertOne()*** command would insert a Document into the Collection. 
+
+    db.flightData.insertOne({
+        "departureAirport": "MUC", 
+        "arrivalAirport": "SFO", 
+        "aircraft": "Airbus A380", 
+        "distance": 12000, 
+        "intercontinental": true 
+    })
+
+find() command would list the Documents in a Collection.
+
+	db.flightData.find().pretty()
+	{
+			"_id" : ObjectId("5f739838f1400095226b9515"),
+			"departureAirport" : "MUC",
+			"arrivalAirport" : "SFO",
+			"aircraft" : "Airbus A380",
+			"distance" : 12000,
+			"intercontinental" : true
+	}
+
+'_id' is a unique identifier that is added by MongoDB. This includes timestamp data in it for its generation. So this determines which Document was older.
+
+MongoDB uses BSON instead of JSON for storing data in database. For example, the *ObjectId* entry is not a valid JSON object.
+
+***insertMany()*** would insert multiple Documents to the collection.
+
+        db.flightData.insertMany([
+        {
+            "departureAirport" : "LIV",
+            "arrivalAirport" : "CHS",
+            "aircraft" : "Airbus A100",
+            "distance" : 2000,
+            "intercontinental" : false
+        },
+        {
+            "departureAirport" : "BRO",
+            "arrivalAirport" : "LOS",
+            "aircraft" : "Airbus A380",
+            "distance" : 1000,
+            "intercontinental" : false
+         }])
+
+A look up at the collection now shows the new Documents.
+
+        db.flightData.find().pretty()
+        {
+                "_id" : ObjectId("5f739838f1400095226b9515"),
+                "departureAirport" : "MUC",
+                "arrivalAirport" : "SFO",
+                "aircraft" : "Airbus A380",
+                "distance" : 12000,
+                "intercontinental" : true
+        }
+        {
+                "_id" : ObjectId("5f73a1e4f1400095226b9516"),
+                "departureAirport" : "LIV",
+                "arrivalAirport" : "CHS",
+                "aircraft" : "Airbus A100",
+                "distance" : 2000,
+                "intercontinental" : false
+        }
+        {
+                "_id" : ObjectId("5f73a1e4f1400095226b9517"),
+                "departureAirport" : "BRO",
+                "arrivalAirport" : "LOS",
+                "aircraft" : "Airbus A380",
+                "distance" : 1000,
+                "intercontinental" : false
+        }
+
+
+# Commands
+
+* *show dbs* lists the databases in the instance.
+* *use shop* switches to the database shop if it exists or would create one for us.
+* *db.products.insertOne( {"name":"Books", "qty":17} )* inserts the JSON document onto the collection. Also the collection products will be
+created if it does not exist.
+* *db.products.find()* gets all the documents in a given collection.
+
 
 
 
