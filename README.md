@@ -101,7 +101,7 @@ MongoDB uses BSON instead of JSON for storing data in database. For example, the
             "intercontinental" : false
          }])
 
-A look up at the collection now shows the new Documents.
+***find()*** retrieves all the Documents in the collection.
 
         db.flightData.find().pretty()
         {
@@ -129,6 +129,27 @@ A look up at the collection now shows the new Documents.
                 "intercontinental" : false
         }
 
+***find() with filters*** help in narrowing the Documents to be extracted
+
+Query to get Documents whose 'distance' is greater than 1000.
+
+	db.flightData.find({"distance":{$gt:1000}}).pretty()
+	{
+		"_id" : ObjectId("5f739838f1400095226b9515"),
+		"departureAirport" : "MUC",
+		"arrivalAirport" : "SFO",
+		"aircraft" : "Airbus A380",
+		"distance" : 12000,
+		"intercontinental" : true
+	}
+	{
+		"_id" : ObjectId("5f73a1e4f1400095226b9516"),
+		"departureAirport" : "LIV",
+		"arrivalAirport" : "CHS",
+		"aircraft" : "Airbus A100",
+		"distance" : 2000,
+		"intercontinental" : false
+	}
 
 # Commands
 
