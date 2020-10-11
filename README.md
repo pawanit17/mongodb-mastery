@@ -182,6 +182,10 @@ Query to get Documents whose 'distance' is greater than 1000.
 		"intercontinental" : false
 	}
 
+###find and cursors
+Find returns first 20 documents along with a cursor. It is so because if an application has a large nuber of documents, then it may not be sensible to return all of them. So find returns a curson which we can use for requesting for the next page word of documents.
+db.passengers.find().toArray() would return all the documents in a given collection.
+
 ## Update
 
 ### updateOne
@@ -281,6 +285,60 @@ Delete is used for deleting documents from a collection.
 	{ "acknowledged" : true, "deletedCount" : 2 }
 	db.flightData.find().pretty()
 
+# Projections
+
+Sometimes an application may only be interested in the details of few fields within all the documents in a collection. In such case sending all the data would be costly over the network. In this case, Projections help. Projections are constructs that help in showing only certain information.
+
+    db.passengers.find() shows all the fields in all the documents.
+	{
+		"_id" : ObjectId("5f82ffdf893423df683faec6"),
+		"name" : "Max Schwarzmueller"
+	}
+	{ "_id" : ObjectId("5f82ffdf893423df683faec7"), "name" : "Manu Lorenz" }
+	{ "_id" : ObjectId("5f82ffdf893423df683faec8"), "name" : "Chris Hayton" }
+	{ "_id" : ObjectId("5f82ffdf893423df683faec9"), "name" : "Sandeep Kumar" }
+	{ "_id" : ObjectId("5f82ffdf893423df683faeca"), "name" : "Maria Jones" }
+	{ "_id" : ObjectId("5f82ffdf893423df683faecb"), "name" : "Alexandra Maier" }
+	{ "_id" : ObjectId("5f82ffdf893423df683faecc"), "name" : "Dr. Phil Evans" }
+	{ "_id" : ObjectId("5f82ffdf893423df683faecd"), "name" : "Sandra Brugge" }
+	{ "_id" : ObjectId("5f82ffdf893423df683faece"), "name" : "Elisabeth Mayr" }
+	{ "_id" : ObjectId("5f82ffdf893423df683faecf"), "name" : "Frank Cube" }
+	{ "_id" : ObjectId("5f82ffdf893423df683faed0"), "name" : "Karandeep Alun" }
+	{ "_id" : ObjectId("5f82ffdf893423df683faed1"), "name" : "Michaela Drayer" }
+	{ "_id" : ObjectId("5f82ffdf893423df683faed2"), "name" : "Bernd Hoftstadt" }
+	{ "_id" : ObjectId("5f82ffdf893423df683faed3"), "name" : "Scott Tolib" }
+	{ "_id" : ObjectId("5f82ffdf893423df683faed4"), "name" : "Freddy Melver" }
+	{ "_id" : ObjectId("5f82ffdf893423df683faed5"), "name" : "Alexis Bohed" }
+	{ "_id" : ObjectId("5f82ffdf893423df683faed6"), "name" : "Melanie Palace" }
+	{ "_id" : ObjectId("5f82ffdf893423df683faed7"), "name" : "Armin Glutch" }
+	{ "_id" : ObjectId("5f82ffdf893423df683faed8"), "name" : "Klaus Arber" }
+	{ "_id" : ObjectId("5f82ffdf893423df683faed9"), "name" : "Albert Twostone" }
+	Type "it" for more
+
+The first argument in find is the criteria in which the documents are to be choosen and the second argument lists the fields that are to be passed in the response.
+The value 1 specifies that the field is to be sent in the response, the value of 0 indicates that it is not meant to be passed back.
+    d.passengers.find({}, {name:1, _id:0}).pretty()
+	{ "name" : "Max Schwarzmueller" }
+	{ "name" : "Manu Lorenz" }
+	{ "name" : "Chris Hayton" }
+	{ "name" : "Sandeep Kumar" }
+	{ "name" : "Maria Jones" }
+	{ "name" : "Alexandra Maier" }
+	{ "name" : "Dr. Phil Evans" }
+	{ "name" : "Sandra Brugge" }
+	{ "name" : "Elisabeth Mayr" }
+	{ "name" : "Frank Cube" }
+	{ "name" : "Karandeep Alun" }
+	{ "name" : "Michaela Drayer" }
+	{ "name" : "Bernd Hoftstadt" }
+	{ "name" : "Scott Tolib" }
+	{ "name" : "Freddy Melver" }
+	{ "name" : "Alexis Bohed" }
+	{ "name" : "Melanie Palace" }
+	{ "name" : "Armin Glutch" }
+	{ "name" : "Klaus Arber" }
+	{ "name" : "Albert Twostone" }
+	Type "it" for more
 
 # Commands
 
