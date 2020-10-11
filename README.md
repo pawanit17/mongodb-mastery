@@ -1,5 +1,4 @@
 # Introduction to MongoDB
-
 MongoDB is a *NOSQL* database that helps in faster application development. This is also suitable for cases where there are lots of READs and WRITEs. Allows application to grow easily as the stringent database constraints do not apply anymore.
 
 Data is stored in Collections in the form of Documents. A typical Document looks as follows:
@@ -316,7 +315,7 @@ Sometimes an application may only be interested in the details of few fields wit
 	Type "it" for more
 
 The first argument in find is the criteria in which the documents are to be choosen and the second argument lists the fields that are to be passed in the response.
-The value 1 specifies that the field is to be sent in the response, the value of 0 indicates that it is not meant to be passed back.
+The value 1 specifies that the field is to be sent in the response, the value of **0** indicates that it is not meant to be passed back.
     d.passengers.find({}, {name:1, _id:0}).pretty()
 	{ "name" : "Max Schwarzmueller" }
 	{ "name" : "Manu Lorenz" }
