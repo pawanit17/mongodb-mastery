@@ -53,11 +53,29 @@ Another example illustrating the flexibility of MongoDB for a *Books* collection
             ]
     }
 
+# Exploring databases
+A MongoDB instance can hold multiple databases. These can be explore via the *show dbs* command that lists the databases.
+
+```show dbs
+admin       0.000GB
+config      0.000GB
+flights     0.000GB
+local       0.000GB
+shop        0.000GB
+users_test  0.000GB
+```
+
+To switch to a specific database within the MongoDB you can use *use shop* command that switches to the database shop if it exists or would create one for us.
+
 # CRUD Data
 
-If the database does not exist, it would be created on the fly. If the collection does not exist, it too would be created.
+Once set into a specific database, we can do CRUD operations on Documents in a specific collection within the database.
 
-***insertOne()*** command would insert a Document into the Collection. 
+## Creation/Insertion
+If the collection specified in the command does not exist, it too would be created automatically.
+
+### InsertOne
+***insertOne()*** command would insert a Document into a specified Collection. 
 
     db.flightData.insertOne({
         "departureAirport": "MUC", 
@@ -67,22 +85,20 @@ If the database does not exist, it would be created on the fly. If the collectio
         "intercontinental": true 
     })
 
-find() command would list the Documents in a Collection.
+  Result: One doucument added to Collection.
+  db.flightData.find().pretty()
+    {
+            "_id" : ObjectId("5f739838f1400095226b9515"),
+            "departureAirport" : "MUC",
+            "arrivalAirport" : "SFO",
+            "aircraft" : "Airbus A380",
+            "distance" : 12000,
+            "intercontinental" : true
+    }
 
-	db.flightData.find().pretty()
-	{
-			"_id" : ObjectId("5f739838f1400095226b9515"),
-			"departureAirport" : "MUC",
-			"arrivalAirport" : "SFO",
-			"aircraft" : "Airbus A380",
-			"distance" : 12000,
-			"intercontinental" : true
-	}
+MongoDB uses BSON instead of JSON for storing data in database. For example, the *ObjectId* entry is not a valid JSON object. '_id' is a unique identifier that is added by MongoDB. This includes timestamp data in it for its generation. So this determines which Document was older.
 
-'_id' is a unique identifier that is added by MongoDB. This includes timestamp data in it for its generation. So this determines which Document was older.
-
-MongoDB uses BSON instead of JSON for storing data in database. For example, the *ObjectId* entry is not a valid JSON object.
-
+### InsertMany
 ***insertMany()*** would insert multiple Documents to the collection.
 
         db.flightData.insertMany([
@@ -101,38 +117,49 @@ MongoDB uses BSON instead of JSON for storing data in database. For example, the
             "intercontinental" : false
          }])
 
-***find()*** retrieves all the Documents in the collection.
+## Read/Retrieval
+***find()*** command would list the Documents in a Collection.
 
-        db.flightData.find().pretty()
-        {
-                "_id" : ObjectId("5f739838f1400095226b9515"),
-                "departureAirport" : "MUC",
-                "arrivalAirport" : "SFO",
-                "aircraft" : "Airbus A380",
-                "distance" : 12000,
-                "intercontinental" : true
-        }
-        {
-                "_id" : ObjectId("5f73a1e4f1400095226b9516"),
-                "departureAirport" : "LIV",
-                "arrivalAirport" : "CHS",
-                "aircraft" : "Airbus A100",
-                "distance" : 2000,
-                "intercontinental" : false
-        }
-        {
-                "_id" : ObjectId("5f73a1e4f1400095226b9517"),
-                "departureAirport" : "BRO",
-                "arrivalAirport" : "LOS",
-                "aircraft" : "Airbus A380",
-                "distance" : 1000,
-                "intercontinental" : false
-        }
+    db.flightData.find().pretty()
+    {
+            "_id" : ObjectId("5f739838f1400095226b9515"),
+            "departureAirport" : "MUC",
+            "arrivalAirport" : "SFO",
+            "aircraft" : "Airbus A380",
+            "distance" : 12000,
+            "intercontinental" : true
+    }
+    {
+            "_id" : ObjectId("5f73a1e4f1400095226b9516"),
+            "departureAirport" : "LIV",
+            "arrivalAirport" : "CHS",
+            "aircraft" : "Airbus A100",
+            "distance" : 2000,
+            "intercontinental" : false
+    }
+    {
+            "_id" : ObjectId("5f73a1e4f1400095226b9517"),
+            "departureAirport" : "BRO",
+            "arrivalAirport" : "LOS",
+            "aircraft" : "Airbus A380",
+            "distance" : 1000,
+            "intercontinental" : false
+    }
 
-***find() with filters*** help in narrowing the Documents to be extracted
+***find() with filters*** help in narrowing the Documents to be extracted.
+
+Query to get Documents whose 'distance' is 1000.
+    db.flightData.find( { "distance": 1000 }).pretty()
+    {
+            "_id" : ObjectId("5f73a1e4f1400095226b9517"),
+            "departureAirport" : "BRO",
+            "arrivalAirport" : "LOS",
+            "aircraft" : "Airbus A380",
+            "distance" : 1000,
+            "intercontinental" : false
+    }
 
 Query to get Documents whose 'distance' is greater than 1000.
-
 	db.flightData.find({"distance":{$gt:1000}}).pretty()
 	{
 		"_id" : ObjectId("5f739838f1400095226b9515"),
@@ -151,15 +178,87 @@ Query to get Documents whose 'distance' is greater than 1000.
 		"intercontinental" : false
 	}
 
+### Update
+
+***updateOne*** method can be used to update one document. Even if multiple matches are encountered, it only updates the first one.
+
+	db.flightData.updateOne( { "_id": ObjectId("5f739838f1400095226b9515") }, {$set:{delayed:true}})
+
+	db.flightData.find().pretty()
+	{
+		"_id" : ObjectId("5f739838f1400095226b9515"),
+		"departureAirport" : "MUC",
+		"arrivalAirport" : "SFO",
+		"aircraft" : "Airbus A380",
+		"distance" : 12000,
+		"intercontinental" : true,
+		"delayed" : true
+	}
+	{
+		"_id" : ObjectId("5f73a1e4f1400095226b9516"),
+		"departureAirport" : "LIV",
+		"arrivalAirport" : "CHS",
+		"aircraft" : "Airbus A100",
+		"distance" : 2000,
+		"intercontinental" : false
+	}
+	{
+		"_id" : ObjectId("5f73a1e4f1400095226b9517"),
+		"departureAirport" : "BRO",
+		"arrivalAirport" : "LOS",
+		"aircraft" : "Airbus A380",
+		"distance" : 1000,
+		"intercontinental" : false
+	}
+	
+***updateMany*** method can be used to update many documents.
+
+	db.flightData.updateMany( { "intercontinental": false }, {$set:{intercontinental:true}})
+	{ "acknowledged" : true, "matchedCount" : 2, "modifiedCount" : 2 }
+	db.flightData.find().pretty()
+	{
+		"_id" : ObjectId("5f739838f1400095226b9515"),
+		"departureAirport" : "MUC",
+		"arrivalAirport" : "SFO",
+		"aircraft" : "Airbus A380",
+		"distance" : 12000,
+		"intercontinental" : true,
+		"delayed" : true
+	}
+	{
+		"_id" : ObjectId("5f73a1e4f1400095226b9516"),
+		"departureAirport" : "LIV",
+		"arrivalAirport" : "CHS",
+		"aircraft" : "Airbus A100",
+		"distance" : 2000,
+		"intercontinental" : true
+	}
+	{
+		"_id" : ObjectId("5f73a1e4f1400095226b9517"),
+		"departureAirport" : "BRO",
+		"arrivalAirport" : "LOS",
+		"aircraft" : "Airbus A380",
+		"distance" : 1000,
+		"intercontinental" : true
+	}
+
 # Commands
 
-* *show dbs* lists the databases in the instance.
-* *use shop* switches to the database shop if it exists or would create one for us.
 * *db.products.insertOne( {"name":"Books", "qty":17} )* inserts the JSON document onto the collection. Also the collection products will be
 created if it does not exist.
 * *db.products.find()* gets all the documents in a given collection.
 
-
+    db.flightData.find().pretty()
+    {
+            "_id" : ObjectId("5f739838f1400095226b9515"),
+            "departureAirport" : "MUC",
+            "arrivalAirport" : "SFO",
+            "aircraft" : "Airbus A380",
+            "distance" : 12000,
+            "intercontinental" : true,
+            "delayed" : true
+    }
+    
 
 
 
