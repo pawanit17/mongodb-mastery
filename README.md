@@ -101,21 +101,21 @@ MongoDB uses BSON instead of JSON for storing data in database. For example, the
 ### insertMany
 ***insertMany()*** would insert multiple Documents to the collection.
 
-        db.flightData.insertMany([
-        {
-            "departureAirport" : "LIV",
-            "arrivalAirport" : "CHS",
-            "aircraft" : "Airbus A100",
-            "distance" : 2000,
-            "intercontinental" : false
-        },
-        {
-            "departureAirport" : "BRO",
-            "arrivalAirport" : "LOS",
-            "aircraft" : "Airbus A380",
-            "distance" : 1000,
-            "intercontinental" : false
-         }])
+	db.flightData.insertMany([
+	{
+		"departureAirport" : "LIV",
+		"arrivalAirport" : "CHS",
+		"aircraft" : "Airbus A100",
+		"distance" : 2000,
+		"intercontinental" : false
+	},
+	{
+		"departureAirport" : "BRO",
+		"arrivalAirport" : "LOS",
+		"aircraft" : "Airbus A380",
+		"distance" : 1000,
+		"intercontinental" : false
+	}])
 
 ## Read/Retrieval
 
@@ -247,6 +247,40 @@ Query to get Documents whose 'distance' is greater than 1000.
 		"distance" : 1000,
 		"intercontinental" : true
 	}
+
+## Delete
+Delete is used for deleting documents from a collection.
+
+### deleteOne
+***deleteOne*** deletes the first Document that matches a criterion.
+
+	db.flightData.deleteOne( {"intercontinental": true} )
+	{ "acknowledged" : true, "deletedCount" : 1 }
+	db.flightData.find().pretty()
+	{
+		"_id" : ObjectId("5f73a1e4f1400095226b9516"),
+		"departureAirport" : "LIV",
+		"arrivalAirport" : "CHS",
+		"aircraft" : "Airbus A100",
+		"distance" : 2000,
+		"intercontinental" : true
+	}
+	{
+		"_id" : ObjectId("5f73a1e4f1400095226b9517"),
+		"departureAirport" : "BRO",
+		"arrivalAirport" : "LOS",
+		"aircraft" : "Airbus A380",
+		"distance" : 1000,
+		"intercontinental" : true
+	}
+
+### deleteMany
+***deleteMany*** can be used to delete Documents that match a criterion.
+
+	db.flightData.deleteMany({})
+	{ "acknowledged" : true, "deletedCount" : 2 }
+	db.flightData.find().pretty()
+
 
 # Commands
 
