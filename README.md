@@ -74,7 +74,7 @@ Once set into a specific database, we can do CRUD operations on Documents in a s
 ## Creation/Insertion
 If the collection specified in the command does not exist, it too would be created automatically.
 
-### InsertOne
+### insertOne
 ***insertOne()*** command would insert a Document into a specified Collection. 
 
     db.flightData.insertOne({
@@ -98,7 +98,7 @@ If the collection specified in the command does not exist, it too would be creat
 
 MongoDB uses BSON instead of JSON for storing data in database. For example, the *ObjectId* entry is not a valid JSON object. '_id' is a unique identifier that is added by MongoDB. This includes timestamp data in it for its generation. So this determines which Document was older.
 
-### InsertMany
+### insertMany
 ***insertMany()*** would insert multiple Documents to the collection.
 
         db.flightData.insertMany([
@@ -118,6 +118,8 @@ MongoDB uses BSON instead of JSON for storing data in database. For example, the
          }])
 
 ## Read/Retrieval
+
+### find
 ***find()*** command would list the Documents in a Collection.
 
     db.flightData.find().pretty()
@@ -146,17 +148,19 @@ MongoDB uses BSON instead of JSON for storing data in database. For example, the
             "intercontinental" : false
     }
 
+### find with filters
+
 ***find() with filters*** help in narrowing the Documents to be extracted.
 
 Query to get Documents whose 'distance' is 1000.
     db.flightData.find( { "distance": 1000 }).pretty()
     {
-            "_id" : ObjectId("5f73a1e4f1400095226b9517"),
-            "departureAirport" : "BRO",
-            "arrivalAirport" : "LOS",
-            "aircraft" : "Airbus A380",
-            "distance" : 1000,
-            "intercontinental" : false
+        "_id" : ObjectId("5f73a1e4f1400095226b9517"),
+        "departureAirport" : "BRO",
+        "arrivalAirport" : "LOS",
+        "aircraft" : "Airbus A380",
+        "distance" : 1000,
+        "intercontinental" : false
     }
 
 Query to get Documents whose 'distance' is greater than 1000.
@@ -178,8 +182,9 @@ Query to get Documents whose 'distance' is greater than 1000.
 		"intercontinental" : false
 	}
 
-### Update
+## Update
 
+### updateOne
 ***updateOne*** method can be used to update one document. Even if multiple matches are encountered, it only updates the first one.
 
 	db.flightData.updateOne( { "_id": ObjectId("5f739838f1400095226b9515") }, {$set:{delayed:true}})
@@ -210,7 +215,8 @@ Query to get Documents whose 'distance' is greater than 1000.
 		"distance" : 1000,
 		"intercontinental" : false
 	}
-	
+
+### updateMany
 ***updateMany*** method can be used to update many documents.
 
 	db.flightData.updateMany( { "intercontinental": false }, {$set:{intercontinental:true}})
