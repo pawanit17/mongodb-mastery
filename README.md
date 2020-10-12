@@ -339,7 +339,7 @@ The value 1 specifies that the field is to be sent in the response, the value of
 	{ "name" : "Albert Twostone" }
 	Type "it" for more
 
-# Commands
+## Commands
 
 * *db.products.insertOne( {"name":"Books", "qty":17} )* inserts the JSON document onto the collection. Also the collection products will be
 created if it does not exist.
@@ -355,8 +355,39 @@ created if it does not exist.
             "intercontinental" : true,
             "delayed" : true
     }
-    
 
+
+# To schema or to not schema
+
+MongoDB is schemaless. Consider the following two documents which fit in the same collection despite having different schema.
+
+	db.products.insertOne({name:"A book", price: 12.99 } )
+	{
+		"acknowledged" : true,
+		"insertedId" : ObjectId("5f84a2005536019ca108737e")
+	}
+	> db.products.insertOne({title:"T-Shirt", seller:{name:"Pavan", age:31}})
+	{
+		"acknowledged" : true,
+		"insertedId" : ObjectId("5f84a2265536019ca108737f")
+	}
+	>
+	> db.products.find().pretty()
+	{
+		"_id" : ObjectId("5f84a2005536019ca108737e"),
+		"name" : "A book",
+		"price" : 12.99
+	}
+	{
+		"_id" : ObjectId("5f84a2265536019ca108737f"),
+		"title" : "T-Shirt",
+		"seller" : {
+			"name" : "Pavan",
+			"age" : 31
+		}
+	}
+
+Although this is allowed in MongoDB, most of the times, it would be beneficial to add some schema. Example, each blog post document should have value for owner. Which schema to use is entirely dependent on the problem at had.
 
 
 
