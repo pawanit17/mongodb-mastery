@@ -285,7 +285,7 @@ Delete is used for deleting documents from a collection.
 	{ "acknowledged" : true, "deletedCount" : 2 }
 	db.flightData.find().pretty()
 
-# Projections
+## Projections
 
 Sometimes an usecase may only be interested in the details of few fields within all the documents in a collection. In such case sending all the data would be costly over the network. In this case, Projections help. Projections are constructs that help in showing only certain information.
 
@@ -317,7 +317,8 @@ Sometimes an usecase may only be interested in the details of few fields within 
 
 The first argument in find is the criteria in which the documents are to be choosen and the second argument lists the fields that are to be passed in the response.
 The value 1 specifies that the field is to be sent in the response, the value of **0** indicates that it is not meant to be passed back.
-    d.passengers.find({}, {name:1, _id:0}).pretty()
+
+    db.passengers.find({}, {name:1, _id:0}).pretty()
 	{ "name" : "Max Schwarzmueller" }
 	{ "name" : "Manu Lorenz" }
 	{ "name" : "Chris Hayton" }
@@ -340,7 +341,10 @@ The value 1 specifies that the field is to be sent in the response, the value of
 	{ "name" : "Albert Twostone" }
 	Type "it" for more
 
-# To schema or to not schema
+# Schema Design
+Some conceptual back ground on Designing MongoDB applications.
+
+## To schema or to not schema
 
 MongoDB is schemaless. Consider the following two documents which fit in the same collection despite having different schema.
 
@@ -370,7 +374,15 @@ MongoDB is schemaless. Consider the following two documents which fit in the sam
 		}
 	}
 
+Although there are no restrictions on what you can insert to a collection, if unrelated data is inserted, over time the collection becomes heterogenous / not serving the purpose anymore. In real world applications, all the records in a given collection have more or less the same common fields with some additional ones for few documents.
+
 Although this is allowed in MongoDB, most of the times, it would be beneficial to add some schema. Example, each blog post document should have value for owner. Which schema to use is entirely dependent on the problem at had.
+
+## Datatypes
+
+MogoDB has several data types like Double, String, Boolean, Date etc. More information here https://docs.mongodb.com/manual/reference/bson-types/.
+
+
 
 
 
