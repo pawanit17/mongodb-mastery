@@ -393,9 +393,13 @@ Basically, there are two ways in which related data could be modelled in Mongodb
 And in general, relationships themselves are of 3 types.
 
 ## One to One
-## One to Many
-## Many to Many
+A User can only have one ShoppingCart. And a ShoppingCart could only belong to a single User.
 
+## One to Many
+A Customer can place many orders. But a single Order could only be placed by a single Customer.
+
+## Many to Many
+Any number of Orders could be placed on a Product. And an Order could have any number of Products.
 
 
 
