@@ -382,6 +382,19 @@ Although this is allowed in MongoDB, most of the times, it would be beneficial t
 
 MogoDB has several data types like Double, String, Boolean, Date etc. More information here https://docs.mongodb.com/manual/reference/bson-types/.
 
+# Modelling relations
+
+Basically, there are two ways in which related data could be modelled in Mongodb.
+
+## Embedded Documents
+
+## Referencing Documents
+
+And in general, relationships themselves are of 3 types.
+
+## One to One
+## One to Many
+## Many to Many
 
 
 
