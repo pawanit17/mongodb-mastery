@@ -153,34 +153,36 @@ MongoDB uses BSON instead of JSON for storing data in database. For example, the
 ***find() with filters*** help in narrowing the Documents to be extracted.
 
 Query to get Documents whose 'distance' is 1000.
+
     db.flightData.find( { "distance": 1000 }).pretty()
     {
-        "_id" : ObjectId("5f73a1e4f1400095226b9517"),
-        "departureAirport" : "BRO",
-        "arrivalAirport" : "LOS",
-        "aircraft" : "Airbus A380",
-        "distance" : 1000,
-        "intercontinental" : false
+	"_id" : ObjectId("5f73a1e4f1400095226b9517"),
+	"departureAirport" : "BRO",
+	"arrivalAirport" : "LOS",
+	"aircraft" : "Airbus A380",
+	"distance" : 1000,
+	"intercontinental" : false
     }
 
 Query to get Documents whose 'distance' is greater than 1000.
-	db.flightData.find({"distance":{$gt:1000}}).pretty()
-	{
-		"_id" : ObjectId("5f739838f1400095226b9515"),
-		"departureAirport" : "MUC",
-		"arrivalAirport" : "SFO",
-		"aircraft" : "Airbus A380",
-		"distance" : 12000,
-		"intercontinental" : true
-	}
-	{
-		"_id" : ObjectId("5f73a1e4f1400095226b9516"),
-		"departureAirport" : "LIV",
-		"arrivalAirport" : "CHS",
-		"aircraft" : "Airbus A100",
-		"distance" : 2000,
-		"intercontinental" : false
-	}
+
+    db.flightData.find({"distance":{$gt:1000}}).pretty()
+    {
+	"_id" : ObjectId("5f739838f1400095226b9515"),
+	"departureAirport" : "MUC",
+	"arrivalAirport" : "SFO",
+	"aircraft" : "Airbus A380",
+	"distance" : 12000,
+	"intercontinental" : true
+    }
+    {
+	"_id" : ObjectId("5f73a1e4f1400095226b9516"),
+	"departureAirport" : "LIV",
+	"arrivalAirport" : "CHS",
+	"aircraft" : "Airbus A100",
+	"distance" : 2000,
+	"intercontinental" : false
+    }
 
 #### cursors
 Find returns first 20 documents along with a cursor. It is so because if an application has a large nuber of documents, then it may not be sensible to return all of them at once. So, find returns a curson which we can use for requesting for the next page word of documents - pagination.
@@ -388,6 +390,63 @@ Basically, there are two ways in which related data could be modelled in Mongodb
 
 ## Embedded Documents
 
+Example, the information about a Product and its reviews.
+
+	db.inventory.insertMany([{
+			"product_name": "JBL Wireless Headset",
+			"cost": 2000.99,
+			"best_price": 1000.99,
+			"color": ["black", "blue"],
+			"manufacturer": "JBL",
+			"stock": 32,
+			"no_of_sellers": 12,
+			"reviews": [{
+					"user": "Srividhyaa",
+					"review": "I bought the headphones a week ago and having been using it nonstop ever since."
+				},
+				{
+					"user": "Honest, Dil Se",
+					"review": "Functional is the word i’d use for the overall design of the T460BT."
+				}
+			]
+		},
+		{
+			"product_name": "Apple Watch Series 3",
+			"cost": 2500.49,
+			"best_price": 1800.49,
+			"color": ["black", "red"],
+			"manufacturer": "Apple",
+			"stock": 100,
+			"no_of_sellers": 10,
+			"reviews": [{
+					"user": "Meet",
+					"review": "Nice watch. But little bit disappointment with this purchase...I didn’t get 5w power adapter with my watch which is shown in above image..."
+				},
+				{
+					"user": "Anurag Pandey",
+					"review": "Trust me I spent almost 4 months to decide weather I should go for this or not. Couple of times, I placed the order and then cancelled and again finally placed it through Amazon."
+				}
+			]
+		},
+		{
+			"product_name": "PS4 Ultra Slim Bundle",
+			"cost": 300,
+			"best_price": 250,
+			"color": ["black", "military"],
+			"manufacturer": "Sony",
+			"stock": 80,
+			"no_of_sellers": 8,
+			"reviews": [{
+					"user": "Rushil G",
+					"review": "First of all, Xbox is not for me as its exclusive game library is not as good, and the ones that are, can be played on PC!"
+				},
+				{
+					"user": "Santhosh M",
+					"review": "If you are choosing between a PlayStation on Xbox , I would recommend ps4 slim rather than a Xbox 1 standard , or even a Xbox 1 s."
+				}
+			]
+		}
+	])
 ## Referencing Documents
 
 And in general, relationships themselves are of 3 types.
