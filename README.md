@@ -390,7 +390,7 @@ Basically, there are two ways in which related data could be modelled in Mongodb
 
 ## Embedded Documents
 
-Example, the information about a Product and its reviews.
+Document containing another Document in MongoDB are referred to as Embedded Documents. Example, the information about a Product and its reviews. You will find this below. The important thing here to consider is, if you look at a Product, you are also interested in its reviews. That is why storing them together will give faster performance.
 
 	db.inventory.insertMany([{
 			"product_name": "JBL Wireless Headset",
@@ -447,18 +447,22 @@ Example, the information about a Product and its reviews.
 			]
 		}
 	])
+
 ## Referencing Documents
 
 And in general, relationships themselves are of 3 types.
 
 ## One to One
-A User can only have one ShoppingCart. And a ShoppingCart could only belong to a single User.
+1. A User can only have one ShoppingCart. And a ShoppingCart could only belong to a single User.
+2. A Review of a Product on an E-commernce site could belong only one User. And a User can have only a single review per a Product.
 
 ## One to Many
-A Customer can place many orders. But a single Order could only be placed by a single Customer.
+1. A Customer can place many orders. But a single Order could only be placed by a single Customer.
+2. A User may have any number of email IDs / phone numbers but an email ID / phone number belongs to a single User.
 
 ## Many to Many
-Any number of Orders could be placed on a Product. And an Order could have any number of Products.
+1. Any number of Orders could be placed on a Product. And an Order could have any number of Products.
+2. A User may have any number of Products in his Wishlist, and a Product could be part of multiple User's Wishlist.
 
 
 
