@@ -449,7 +449,56 @@ Document containing another Document in MongoDB are referred to as Embedded Docu
 	])
 
 ## Referencing Documents
+For example, if there is a sale going on in Amazon, then they would be something like the following:
+1. 10% off on HSBC Net Banking
+2. 10% cashback on HDFC Credit Cards
+3. 5% cashback on Amazon ICICI Pay Credit Cards etc.
 
+Lets create a collection called `offers` and insert the above three offers.
+	`db.offers.insertMany([
+        {
+	    "payment_type": "net-banking",
+	    "offer": "10% off on HSBC Net Banking"
+	},
+	{
+	    "payment_type": "Credit Cards",
+	    "offer": "10% cashback on HDFC Credit Cards"
+	},
+	{
+	    "payment_type": "Credit Cards",
+	    "offer": "5% cashback on Amazon ICICI Pay Credit Cards etc"
+	}
+	])`
+
+And we will also be able to get their IDs now.
+	`{
+		"acknowledged" : true,
+		"insertedIds" : [
+			ObjectId("5f906cb86ae1288bbeb11504"),
+			ObjectId("5f906cb86ae1288bbeb11505"),
+			ObjectId("5f906cb86ae1288bbeb11506")
+		]
+	}`
+
+Now we model the inventory collection content with offers available to them. As you can see, there are different offers available to different products. Instead of using the
+offer information as an embedded document, we seperate out via a reference. This is helpful as if in future 
+	`db.inventory.insertMany([
+	    {
+		"product_name": "JBL Wireless Headset",
+		"cost": 2000.99,
+		"offers": [ ObjectId("5f906cb86ae1288bbeb11504"), ObjectId("5f906cb86ae1288bbeb11505") ]
+	    },
+	    {
+		"product_name": "Apple Watch Series 3",
+		"cost": 2500.49,
+		"offers": [ ObjectId("5f906cb86ae1288bbeb11505") ]
+	    },
+	    {
+		"product_name": "PS4 Ultra Slim Bundle",
+		"cost": 300,
+		"offers": [ ObjectId("5f906cb86ae1288bbeb11506") ]
+	    }
+	    ])`
 And in general, relationships themselves are of 3 types.
 
 ## One to One
