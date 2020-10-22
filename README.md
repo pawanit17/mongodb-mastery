@@ -452,7 +452,7 @@ Document containing another Document in MongoDB are referred to as Embedded Docu
 1. Since the connected data is in the same Document, the number of READ operations will be reduced.
 2. Sometime this approach can load the data that is not necessary. For example, to know what all Products are available in the inventory, in the example above, the reviews are also returned. This is not necessary strictly for our usecase.
 3. Keep an eye on the 16MB document size limit for MongoDB.
-4. To fix point 2, we can use subset design pattern. This is nothing but splitting the Document into two collections. `Reviews` could be a collection of its own with `Products` being the other collection. And using a JOIN, we can get the total result. But this usually increases the load time and the maintenance times.
+4. To fix point 2, we can use **subset design pattern**. This is nothing but splitting the Document into two collections. `Reviews` could be a collection of its own with `Products` being the other collection. And using a JOIN, we can get the total result. But this usually increases the load time and the maintenance times.
 
 ## Referencing Documents
 For example, if there is a sale going on in Amazon, then they would be something like the following:
@@ -507,6 +507,11 @@ offer information as an embedded document, we seperate out via a reference. This
 		"offers": [ ObjectId("5f906cb86ae1288bbeb11506") ]
 	}
     ])
+
+### Points to note
+1. The reference to connect the islands of data can be put on either side. Best practise is to put it on the side that is going to have more increase. For example, in our case, since the reviews for a product are unbounded, it is better to have the `Review` document have a reference to the `Product`.
+2. This approach helps us in preventing the maintenance of a mutable growing array - if the reference had been on the `Products` document ( array of reviews which have to be updated each time there is an addition ).
+3. Extra time will be taken for relating the two pieces of data together unlike embedded Document.
 
 And in general, relationships themselves are of 3 types.
 
