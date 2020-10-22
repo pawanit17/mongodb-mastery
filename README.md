@@ -526,10 +526,11 @@ And in general, relationships themselves are of 3 types.
 2. A User may have any number of email IDs / phone numbers but an email ID / phone number belongs to a single User.
 
 [MongoDB (Embedded) Documentation on 1-* Mappings](https://docs.mongodb.com/manual/tutorial/model-embedded-one-to-many-relationships-between-documents/)
-[MongoDB (Referenced) Documentation on 1-* Mappings](https://docs.mongodb.com/manual/tutorial/model-referenced-one-to-many-relationships-between-documents/)
 
 ## Many to Many
 1. Any number of Orders could be placed on a Product. And an Order could have any number of Products.
 2. A User may have any number of Products in his Wishlist, and a Product could be part of multiple User's Wishlist.
+
+[MongoDB (Referenced) Documentation on 1-* Mappings](https://docs.mongodb.com/manual/tutorial/model-referenced-one-to-many-relationships-between-documents/)
 
 
