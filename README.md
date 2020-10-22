@@ -382,7 +382,7 @@ Although this is allowed in MongoDB, most of the times, it would be beneficial t
 
 ## Datatypes
 
-MogoDB has several data types like Double, String, Boolean, Date etc. More information here https://docs.mongodb.com/manual/reference/bson-types/.
+MogoDB has several data types like Double, String, Boolean, Date etc. More information here [MongoDB Documentation on BSON Types](https://docs.mongodb.com/manual/reference/bson-types/).
 
 # Modelling relations
 
@@ -448,6 +448,12 @@ Document containing another Document in MongoDB are referred to as Embedded Docu
 		}
 	])
 
+### Points to note
+1. Since the connected data is in the same Document, the number of READ operations will be reduced.
+2. Sometime this approach can load the data that is not necessary. For example, to know what all Products are available in the inventory, in the example above, the reviews are also returned. This is not necessary strictly for our usecase.
+3. Keep an eye on the 16MB document size limit for MongoDB.
+4. To fix point 2, we can use subset design pattern. This is nothing but splitting the Document into two collections. `Reviews` could be a collection of its own with `Products` being the other collection. And using a JOIN, we can get the total result. But this usually increases the load time and the maintenance times.
+
 ## Referencing Documents
 For example, if there is a sale going on in Amazon, then they would be something like the following:
 1. 10% off on HSBC Net Banking
@@ -508,13 +514,17 @@ And in general, relationships themselves are of 3 types.
 1. A User can only have one ShoppingCart. And a ShoppingCart could only belong to a single User.
 2. A Review of a Product on an E-commernce site could belong only one User. And a User can have only a single review per a Product.
 
+[MongoDB Documentation on 1-1 Mappings](https://docs.mongodb.com/manual/tutorial/model-embedded-one-to-one-relationships-between-documents/)
+
 ## One to Many
 1. A Customer can place many orders. But a single Order could only be placed by a single Customer.
 2. A User may have any number of email IDs / phone numbers but an email ID / phone number belongs to a single User.
 
+[MongoDB (Embedded) Documentation on 1-* Mappings](https://docs.mongodb.com/manual/tutorial/model-embedded-one-to-many-relationships-between-documents/)
+[MongoDB (Referenced) Documentation on 1-* Mappings](https://docs.mongodb.com/manual/tutorial/model-referenced-one-to-many-relationships-between-documents/)
+
 ## Many to Many
 1. Any number of Orders could be placed on a Product. And an Order could have any number of Products.
 2. A User may have any number of Products in his Wishlist, and a Product could be part of multiple User's Wishlist.
-
 
 
