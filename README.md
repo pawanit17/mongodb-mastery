@@ -533,4 +533,9 @@ And in general, relationships themselves are of 3 types.
 
 [MongoDB (Referenced) Documentation on 1-* Mappings](https://docs.mongodb.com/manual/tutorial/model-referenced-one-to-many-relationships-between-documents/)
 
+## Aggregations
+
+Aggregation operations group values from multiple documents together, and can perform a variety of operations on the grouped data to return a single result.
+
+Ex: The total amount of product value obtained from selling different Products at an inventory system.
 
